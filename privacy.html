@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c0c0c">
+<title>Privacy Policy — Aurthor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --bg: #0c0c0c;
+    --bg2: #141414;
+    --bg3: #1c1c1c;
+    --border: #242424;
+    --border2: #303030;
+    --text: #ede9e1;
+    --text2: #8a8680;
+    --text3: #4a4744;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-ui: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f0ece4;
+      --bg2: #e8e4dc;
+      --bg3: #dedad2;
+      --border: #d0ccc4;
+      --border2: #b8b4ac;
+      --text: #141414;
+      --text2: #6a6460;
+      --text3: #a0998f;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    line-height: 1.7;
+    min-height: 100%;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* Header */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 64px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .logo span { color: var(--red); }
+
+  .back-link {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--red); }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border2);
+    max-width: 40px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .hero-meta {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: var(--font-mono);
+  }
+
+  /* TL;DR card */
+  .tldr {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-left: 3px solid var(--red);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 52px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .tldr-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .tldr p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .tldr strong { color: var(--text); font-weight: 600; }
+
+  /* Sections */
+  .section {
+    margin-bottom: 44px;
+    animation: fadeUp 0.6s 0.15s ease both;
+    padding-bottom: 44px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-of-type {
+    border-bottom: none;
+  }
+
+  .section-number {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .section p {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 12px;
+    line-height: 1.75;
+  }
+
+  .section p:last-child { margin-bottom: 0; }
+
+  .section ul {
+    list-style: none;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .section ul li {
+    font-size: 14px;
+    color: var(--text2);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .section ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--red);
+  }
+
+  .section ul li strong { color: var(--text); font-weight: 600; }
+
+  /* Highlight box */
+  .highlight {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+    font-family: var(--font-mono);
+  }
+
+  /* Contact */
+  .contact-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 8px;
+  }
+
+  .contact-card p {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  .contact-card p:last-child { margin-bottom: 0; }
+
+  .contact-card a {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-card a:hover { text-decoration: underline; }
+
+  /* Footer */
+  .page-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text3);
+    letter-spacing: -0.3px;
+  }
+
+  .footer-logo span { color: var(--red); }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <a href="/" class="logo">Aurthor<span>.</span></a>
+    <a href="/" class="back-link">Back to app</a>
+  </header>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Legal</div>
+    <h1>Privacy Policy</h1>
+    <div class="hero-meta">Last updated: March 2026</div>
+  </div>
+
+  <div class="tldr">
+    <div class="tldr-label">The short version</div>
+    <p><strong>Aurthor does not collect, store, or transmit your data.</strong> Everything you write stays on your device. Your API keys never leave your phone. We have no servers, no accounts, and no analytics. This policy exists to be transparent about that.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">01</div>
+    <h2>Who We Are</h2>
+    <p>Aurthor is an AI-assisted writing application available as a Progressive Web App (PWA). It is designed to help writers plan, draft, and refine content using AI language models provided by third-party services.</p>
+    <p>This privacy policy explains how Aurthor handles your information when you use the app.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">02</div>
+    <h2>Data We Do Not Collect</h2>
+    <p>Aurthor does not operate any backend servers or databases. We do not collect:</p>
+    <ul>
+      <li><strong>Your documents or writing</strong> — all content is stored exclusively in your device's local storage</li>
+      <li><strong>Your API keys</strong> — keys you enter are saved locally on your device only and are never transmitted to us</li>
+      <li><strong>Your profile information</strong> — name, role, brand details, and writing preferences stay on your device</li>
+      <li><strong>Usage analytics</strong> — we do not track how you use the app, how often, or what features you use</li>
+      <li><strong>Device identifiers</strong> — we collect no advertising IDs, device fingerprints, or similar identifiers</li>
+      <li><strong>Location data</strong> — Aurthor never requests or accesses your location</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-number">03</div>
+    <h2>How Your Data Is Stored</h2>
+    <p>All data created in Aurthor — including documents, projects, profile details, settings, and API keys — is stored using your browser's <strong>localStorage</strong> on the device you are using.</p>
+    <div class="highlight">localStorage is isolated per device and per browser. Data stored this way is only accessible to you on that specific device and is never sent anywhere automatically.</div>
+    <p>This means your data is not backed up to a cloud service, not synced between devices, and not accessible to anyone other than you on that device.</p>
+    <p>Clearing your browser data or uninstalling the app will permanently delete all locally stored Aurthor data.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">04</div>
+    <h2>Third-Party AI Providers</h2>
+    <p>Aurthor connects to AI language model providers to power its writing and chat features. These providers include:</p>
+    <ul>
+      <li><strong>Anthropic</strong> (Claude models)</li>
+      <li><strong>OpenAI</strong> (GPT models)</li>
+      <li><strong>xAI</strong> (Grok models)</li>
+      <li><strong>Google</strong> (Gemini models)</li>
+      <li><strong>Groq</strong></li>
+    </ul>
+    <p>When you use the chat or AI revision features, your writing content and messages are sent directly from your device to whichever provider's API you have configured. This transmission goes <strong>directly between your device and that provider</strong> — it does not pass through any Aurthor server.</p>
+    <p>Each provider has its own privacy policy and data handling practices. You should review the privacy policy of whichever provider you choose to use:</p>
+    <ul>
+      <li>Anthropic: <strong>anthropic.com/privacy</strong></li>
+      <li>OpenAI: <strong>openai.com/privacy</strong></li>
+      <li>Google: <strong>policies.google.com/privacy</strong></li>
+      <li>xAI: <strong>x.ai/privacy</strong></li>
+      <li>Groq: <strong>groq.com/privacy</strong></li>
+    </ul>
+    <p>Aurthor is not responsible for how these third-party providers handle data sent to their APIs.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">05</div>
+    <h2>API Keys</h2>
+    <p>To use AI features, you must provide your own API key from one of the supported providers. These keys are:</p>
+    <ul>
+      <li>Stored only in your device's localStorage</li>
+      <li>Never transmitted to Aurthor or any server we control</li>
+      <li>Used solely to authenticate requests sent directly from your device to the AI provider</li>
+    </ul>
+    <p>You are responsible for the security of your API keys. We recommend using keys with appropriate usage limits set within your provider's dashboard.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">06</div>
+    <h2>Cookies and Tracking</h2>
+    <p>Aurthor does not use cookies. We do not use any tracking technologies, advertising pixels, or analytics tools of any kind.</p>
+    <p>The app uses localStorage (not cookies) solely for the purpose of saving your work locally on your device.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">07</div>
+    <h2>Children's Privacy</h2>
+    <p>Aurthor is not directed at children under the age of 13. We do not knowingly collect any information from children. Because Aurthor collects no data from any user, there is no special risk to children's data — however, the app requires paid third-party API keys to function, which are intended for adults.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">08</div>
+    <h2>Your Rights</h2>
+    <p>Because Aurthor does not collect or store any personal data on external servers, most traditional data rights (access, deletion, portability) are handled entirely by you — on your own device.</p>
+    <ul>
+      <li><strong>To delete your data</strong> — clear your browser's localStorage or uninstall the app</li>
+      <li><strong>To export your data</strong> — use the Export feature within the app to download your documents</li>
+      <li><strong>To access your data</strong> — it is already on your device, accessible at any time</li>
+    </ul>
+    <p>If you have used a third-party AI provider through Aurthor, contact that provider directly to exercise any rights over data they may have retained.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">09</div>
+    <h2>Changes to This Policy</h2>
+    <p>If this privacy policy changes in a material way, the updated date at the top of this page will reflect that. We will not notify users directly as we have no way to contact you — by design.</p>
+    <p>We recommend checking this page if you have questions about our data practices.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">10</div>
+    <h2>Contact</h2>
+    <div class="contact-card">
+      <p>If you have questions about this privacy policy or Aurthor's data practices, you can reach us at:</p>
+      <p><a href="mailto:aurthorai@gmail.com">aurthorai@gmail.com</a></p>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-logo">Aurthor<span>.</span></div>
+    <div class="footer-copy">© 2026 Aurthor. All rights reserved.</div>
+  </footer>
+
+</div>
+</body>
+</html>
