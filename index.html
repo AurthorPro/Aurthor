@@ -140,9 +140,17 @@ html,body { height:100%; overflow:hidden; background:var(--bg); color:var(--text
 #s-editor { z-index:30; }
 .editor-meta-bar { display:flex; align-items:center; gap:8px; padding:8px 16px; border-bottom:1px solid var(--border); background:var(--bg2); flex-shrink:0; }
 .editor-type-tag { padding:4px 10px; border-radius:20px; background:var(--bg3); border:1px solid var(--border2); font-size:11px; letter-spacing:0.8px; text-transform:uppercase; color:var(--text2); font-weight:500; }
-.guardrail-counter { margin-left:auto; font-size:12px; color:var(--text3); font-family:var(--font-mono); transition:color 0.3s; }
+.guardrail-counter { font-size:12px; color:var(--text3); font-family:var(--font-mono); transition:color 0.3s; }
 .guardrail-counter.warn { color:var(--amber); }
 .guardrail-counter.over { color:var(--red); }
+
+/* UNDO BUTTON */
+.undo-btn { width:30px; height:30px; border-radius:var(--r-sm); background:var(--bg3); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.15s; flex-shrink:0; margin-left:auto; }
+.undo-btn svg { width:14px; height:14px; stroke:var(--text2); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.undo-btn:active { background:var(--bg4); transform:scale(0.92); }
+.undo-btn.has-history svg { stroke:var(--text); }
+.undo-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
 .guardrail-nudge { background:rgba(212,130,26,0.12); border:1px solid rgba(212,130,26,0.3); border-radius:var(--r-sm); padding:8px 12px; margin:8px 16px 0; font-size:13px; color:var(--amber); display:none; line-height:1.5; align-items:flex-start; gap:8px; }
 .guardrail-nudge.show { display:flex; }
 .nudge-icon { flex-shrink:0; margin-top:1px; }
@@ -468,6 +476,12 @@ html,body { height:100%; overflow:hidden; background:var(--bg); color:var(--text
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
     <div class="app-bar-sub" id="editor-project-name" style="font-size:13px;color:var(--text2);flex:1;"></div>
+    <div class="bar-btn" onclick="performUndo()" id="undo-btn-editor" title="Undo (Ctrl+Z)" style="opacity:0.3;">
+      <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+    </div>
+    <div class="bar-btn" onclick="performRedo()" id="redo-btn-editor" title="Redo (Ctrl+Y)" style="opacity:0.3;">
+      <svg viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+    </div>
     <div class="bar-btn" onclick="openOverlay('o-export')">
       <svg viewBox="0 0 24 24"><line x1="12" y1="15" x2="12" y2="3"/><polyline points="17 8 12 3 7 8"/><path d="M20 21H4"/></svg>
     </div>
@@ -541,7 +555,13 @@ html,body { height:100%; overflow:hidden; background:var(--bg); color:var(--text
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
     <div class="app-bar-sub" id="block-editor-label">Editing Block</div>
-    <div class="bar-btn" onclick="applyRevision()" style="border-color:var(--red);">
+    <div class="bar-btn" onclick="performUndo()" id="undo-btn-block" title="Undo (Ctrl+Z)" style="opacity:0.3;">
+      <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+    </div>
+    <div class="bar-btn" onclick="performRedo()" id="redo-btn-block" title="Redo (Ctrl+Y)" style="opacity:0.3;">
+      <svg viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+    </div>
+    <div class="bar-btn" onclick="applyRevision()" style="border-color:var(--red);" title="Apply AI revision">
       <svg viewBox="0 0 24 24" style="stroke:var(--red)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
     </div>
   </div>
@@ -697,6 +717,11 @@ html,body { height:100%; overflow:hidden; background:var(--bg); color:var(--text
       <div class="export-opt" onclick="exportAs('html')">
         <div class="export-opt-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
         <div><div class="export-opt-name">Export HTML</div><div class="export-opt-desc">Ready for web</div></div>
+        <div class="export-opt-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="export-opt" onclick="exportAs('md')">
+        <div class="export-opt-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg></div>
+        <div><div class="export-opt-name">Export Markdown</div><div class="export-opt-desc">For blogs &amp; CMS</div></div>
         <div class="export-opt-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
     </div>
@@ -902,6 +927,108 @@ const S = {
   chatHistory: []
 };
 
+// ══════════════════════════════════════════
+//  UNDO / REDO SYSTEM
+// ══════════════════════════════════════════
+const UndoStack = {
+  past: [],    // snapshots before current
+  future: [],  // snapshots after current (for redo)
+  maxSize: 50,
+
+  snapshot() {
+    return {
+      title: document.getElementById('doc-title')?.value || '',
+      blocks: S.blocks.map((b, i) => {
+        const ta = document.querySelector(`#blk-${i} .block-ta`);
+        return { type: b.type, content: ta ? ta.value : (b.content || '') };
+      })
+    };
+  },
+
+  push() {
+    const snap = this.snapshot();
+    if (this.past.length > 0) {
+      const last = this.past[this.past.length - 1];
+      if (JSON.stringify(last) === JSON.stringify(snap)) return;
+    }
+    this.past.push(snap);
+    if (this.past.length > this.maxSize) this.past.shift();
+    this.future = []; // new action clears redo
+    this.updateBtns();
+  },
+
+  clear() {
+    this.past = [];
+    this.future = [];
+    this.updateBtns();
+  },
+
+  updateBtns() {
+    const canUndo = this.past.length > 1;
+    const canRedo = this.future.length > 0;
+    ['undo-btn-editor','undo-btn-block'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.style.opacity = canUndo ? '1' : '0.3';
+    });
+    ['redo-btn-editor','redo-btn-block'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.style.opacity = canRedo ? '1' : '0.3';
+    });
+  }
+};
+
+let _undoPushTimer = null;
+function scheduleUndoPush() {
+  clearTimeout(_undoPushTimer);
+  _undoPushTimer = setTimeout(() => UndoStack.push(), 600);
+}
+
+function restoreSnapshot(snap) {
+  const titleEl = document.getElementById('doc-title');
+  if (titleEl) { titleEl.value = snap.title; autoResize(titleEl); }
+  document.getElementById('blocks-container').innerHTML = '';
+  S.blocks = [];
+  snap.blocks.forEach(b => addBlock(b.type, true, b.content));
+  if (!S.blocks.length) addBlock('paragraph', true);
+  setTimeout(() => document.querySelectorAll('.block-ta').forEach(ta => autoResize(ta)), 50);
+  S.unsaved = true;
+  updateGuardrail();
+  UndoStack.updateBtns();
+  // Sync block editor if open
+  if (S.screen === 'block' && S.currentBlockIdx !== null) {
+    const ta = document.querySelector(`#blk-${S.currentBlockIdx} .block-ta`);
+    const edTA = document.getElementById('block-editor-ta');
+    if (ta && edTA) { edTA.value = ta.value; autoResize(edTA); }
+  }
+}
+
+function performUndo() {
+  if (UndoStack.past.length < 2) { toast('Nothing to undo'); return; }
+  const current = UndoStack.past.pop();
+  UndoStack.future.unshift(current);
+  const snap = UndoStack.past[UndoStack.past.length - 1];
+  restoreSnapshot(snap);
+  toast('Undone');
+}
+
+function performRedo() {
+  if (UndoStack.future.length === 0) { toast('Nothing to redo'); return; }
+  const snap = UndoStack.future.shift();
+  UndoStack.past.push(snap);
+  restoreSnapshot(snap);
+  toast('Redone');
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+    if (S.screen === 'editor' || S.screen === 'block') { e.preventDefault(); performUndo(); }
+  }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+    if (S.screen === 'editor' || S.screen === 'block') { e.preventDefault(); performRedo(); }
+  }
+});
+
 const GUARDRAILS = {
   social: { maxChars: 2200, maxHashtags: 30, platform: 'Instagram', warnAt: 1800 },
   blog:   { minWords: 300, warnBelow: 300 }
@@ -1019,7 +1146,6 @@ function loadProfile() {
     document.getElementById('profile-avatar-img').style.display = 'block';
     document.getElementById('profile-avatar-icon').style.display = 'none';
   }
-  // Reset accordion state on open
   _profileExpanded = false;
   const body = document.getElementById('profile-expand-body');
   const chevron = document.getElementById('profile-chevron');
@@ -1345,7 +1471,6 @@ function openDoc(id) {
   S.blocks = [];
   (doc.blocks||[]).forEach(b => addBlock(b.type, true, b.content));
   if (!S.blocks.length) addBlock('paragraph',true);
-  // Resize all blocks after render so nothing is clipped
   setTimeout(() => {
     document.querySelectorAll('.block-ta').forEach(ta => autoResize(ta));
     autoResize(document.getElementById('doc-title'));
@@ -1354,6 +1479,9 @@ function openDoc(id) {
   resetChatHistory();
   updateGuardrail();
   updateEditorModelBadge();
+  // Init undo stack with initial state
+  UndoStack.clear();
+  setTimeout(() => UndoStack.push(), 200);
   navTo('editor');
   if (proj?.rules) {
     const msgs = document.getElementById('chat-msgs');
@@ -1457,6 +1585,8 @@ function deleteBlock(idx) {
 }
 
 function trashBlock(idx) {
+  // Push undo snapshot BEFORE deleting
+  UndoStack.push();
   const block = S.blocks[idx];
   if (block?.content?.trim()) {
     const trashed = load('tpr_trash', []);
@@ -1470,7 +1600,9 @@ function trashBlock(idx) {
 function handleBlockKey(e,idx) {
   if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); addBlock('paragraph'); }
   if (e.key==='Backspace'&&e.target.value===''&&S.blocks.length>1) {
-    e.preventDefault(); deleteBlock(idx);
+    e.preventDefault();
+    UndoStack.push(); // snapshot before delete
+    deleteBlock(idx);
     const prev = document.querySelector(`#blk-${idx-1} .block-ta`);
     if (prev) prev.focus();
   }
@@ -1570,29 +1702,67 @@ function insertTxt(text) {
 // ══════════════════════════════════════════
 //  REVISION
 // ══════════════════════════════════════════
+
+// Explicit system prompts for each revision type — deterministic rules, not vague instructions
+const REVISION_PROMPTS = {
+  'Tone':        `You are a tone editor. Improve the tone of the following text to make it more confident, clear, and appropriate for its context. Keep the same meaning and approximate length. Return ONLY the revised text, no commentary.`,
+  'Shorten':     `You are a ruthless editor. Cut the following text by at least 40%. Remove filler words, redundant phrases, weak qualifiers (very, really, just, quite), and anything that doesn't add meaning. Keep every essential idea. Return ONLY the shortened text — never more than 60% of the original word count. No commentary.`,
+  'Expand':      `You are an expansive writer. Develop the following text further — add supporting detail, examples, sensory language, or elaboration where the writing is thin. Aim to roughly double the length while preserving the author's voice. Return ONLY the expanded text, no commentary.`,
+  'Simplify':    `You are a plain-language editor. Rewrite the following text so it is easy to understand for a general audience. Replace jargon and complex words with simpler alternatives. Use short sentences. Preserve all meaning. Return ONLY the simplified text, no commentary.`,
+  'Engaging':    `You are an engagement specialist. Rewrite the following text to hook the reader immediately. Use active voice, strong verbs, a compelling opening, and varied sentence rhythm. Make it impossible to stop reading. Preserve the core meaning. Return ONLY the revised text, no commentary.`,
+  'Grammar':     `You are a copy editor. Fix all grammar, spelling, punctuation, and syntax errors in the following text. Correct comma splices, run-ons, apostrophe errors, and inconsistent tense. Do not change the author's style or word choices beyond what is necessary for correctness. Return ONLY the corrected text, no commentary.`,
+  'Rewrite':     `You are a ghostwriter. Completely rewrite the following text from scratch in a fresh way. Keep the same core meaning and topic, but use entirely different phrasing, structure, and sentence construction. Return ONLY the rewritten text, no commentary.`,
+  'Match Rules': `You are a compliance editor. Rewrite the following text to strictly follow all project writing rules provided. If no rules are given, improve clarity and consistency. Return ONLY the revised text, no commentary.`,
+};
+
 function selectRev(el, type) {
   document.querySelectorAll('.rev-chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on'); S.selectedRevision=type;
-  document.getElementById('rev-custom').placeholder=type+'…';
+  document.getElementById('rev-custom').value = '';
+  document.getElementById('rev-custom').placeholder = type + '…';
 }
 
 async function applyRevision() {
   const ta = document.getElementById('block-editor-ta');
   const content = ta.value.trim();
   if (!content) { toast('Nothing to revise'); return; }
-  const instruction = document.getElementById('rev-custom').value || S.selectedRevision || 'Improve this writing';
+  const customInstruction = document.getElementById('rev-custom').value.trim();
+  const revType = S.selectedRevision;
   if (!getActiveKey()) { toast('Add API key in Settings'); return; }
+
   const proj = S.projects.find(p=>p.id===S.currentProjectId);
-  const rules = proj?.rules ? `\n\nProject rules to follow: ${proj.rules}` : '';
+  const rules = proj?.rules ? `\n\nProject writing rules: ${proj.rules}` : '';
   const memory = getMemoryContext();
   const profile = getProfileContext();
+
+  // Use explicit system prompt if a chip is selected, otherwise use custom instruction
+  let systemPrompt, userMsg;
+  if (customInstruction) {
+    systemPrompt = `You are a writing editor. ${customInstruction}. Return ONLY the revised text, no commentary, no preamble.${rules}${memory}${profile}`;
+    userMsg = `Text to revise:\n${content}`;
+  } else if (revType && REVISION_PROMPTS[revType]) {
+    systemPrompt = REVISION_PROMPTS[revType] + (rules || '') + (memory || '') + (profile || '');
+    userMsg = `Text:\n${content}`;
+  } else {
+    systemPrompt = `You are a writing editor. Improve the following text. Return ONLY the revised text, no commentary.${rules}${memory}${profile}`;
+    userMsg = `Text:\n${content}`;
+  }
+
+  // Push undo snapshot before revision
+  UndoStack.push();
   toast('Revising…');
   try {
     const revised = await callLLM(
-      [{role:'user', content:`${instruction} the following text. Return ONLY the revised text with no commentary.${rules}${memory}${profile}\n\nText:\n${content}`}],
-      null, 1000
+      [{ role: 'user', content: userMsg }],
+      systemPrompt,
+      1200
     );
-    if (revised) { ta.value=revised; autoResize(ta); onDocChange(); toast('Revision applied'); }
+    if (revised) {
+      ta.value = revised.trim();
+      autoResize(ta);
+      onDocChange();
+      toast('Revision applied');
+    }
   } catch(e) { toast('Error — check API key'); }
 }
 
@@ -1664,31 +1834,19 @@ async function sendChat() {
 
 function parseMarkdown(text) {
   return text
-    // Escape HTML first
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    // Code blocks ```...```
     .replace(/```[\s\S]*?```/g, m => `<pre style="background:var(--bg4);border-radius:6px;padding:8px 10px;font-family:var(--font-mono);font-size:12px;overflow-x:auto;margin:4px 0;">${m.slice(3,-3).replace(/^[\w]*\n/,'')}</pre>`)
-    // Inline code `...`
     .replace(/`([^`]+)`/g, '<code style="background:var(--bg4);padding:1px 5px;border-radius:4px;font-family:var(--font-mono);font-size:12px;">$1</code>')
-    // Bold **...**
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    // Italic *...*
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    // Bold _..._
     .replace(/__([^_]+)__/g, '<strong>$1</strong>')
-    // Italic _..._
     .replace(/_([^_]+)_/g, '<em>$1</em>')
-    // Headers ### ## #
     .replace(/^### (.+)$/gm, '<div style="font-weight:700;font-size:13px;margin:6px 0 2px;">$1</div>')
     .replace(/^## (.+)$/gm, '<div style="font-weight:700;font-size:14px;margin:6px 0 2px;">$1</div>')
     .replace(/^# (.+)$/gm, '<div style="font-weight:700;font-size:15px;margin:6px 0 2px;">$1</div>')
-    // Unordered list items
     .replace(/^[\-\*] (.+)$/gm, '<div style="padding-left:12px;margin:2px 0;">· $1</div>')
-    // Numbered list items
     .replace(/^\d+\. (.+)$/gm, '<div style="padding-left:12px;margin:2px 0;">$1</div>')
-    // Links [text](url)
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;text-underline-offset:2px;">$1</a>')
-    // Line breaks
     .replace(/\n\n/g, '<br><br>')
     .replace(/\n/g, '<br>');
 }
@@ -1794,42 +1952,149 @@ async function doResearch() {
 }
 
 // ══════════════════════════════════════════
-//  EXPORT
+//  EXPORT — FIXED FORMATTING
 // ══════════════════════════════════════════
 function getAllText() {
   const title = document.getElementById('doc-title').value;
-  const blocks = Array.from(document.querySelectorAll('.block-ta')).map(b=>b.value).join('\n\n');
-  return [title,blocks].filter(Boolean).join('\n\n');
+  const blocks = Array.from(document.querySelectorAll('.block-ta')).map(b => {
+    const type = b.dataset.type;
+    const val = b.value;
+    if (!val.trim()) return '';
+    if (type === 'h1') return `# ${val}`;
+    if (type === 'h2') return `## ${val}`;
+    if (type === 'quote') return `> ${val}`;
+    if (type === 'code') return `\`\`\`\n${val}\n\`\`\``;
+    return val;
+  }).filter(Boolean).join('\n\n');
+  return [title, blocks].filter(Boolean).join('\n\n');
 }
+
+function getAllTextPlain() {
+  // Pure plain text — no markdown formatting, good for clipboard copy
+  const title = document.getElementById('doc-title').value;
+  const blocks = Array.from(document.querySelectorAll('.block-ta'))
+    .map(b => b.value.trim())
+    .filter(Boolean)
+    .join('\n\n');
+  return [title, blocks].filter(Boolean).join('\n\n');
+}
+
+function getAllMarkdown() {
+  const title = document.getElementById('doc-title').value;
+  const parts = [];
+  if (title) parts.push(`# ${title}`);
+  Array.from(document.querySelectorAll('.block-ta')).forEach(b => {
+    const type = b.dataset.type;
+    const val = b.value.trim();
+    if (!val) return;
+    if (type === 'h1') parts.push(`# ${val}`);
+    else if (type === 'h2') parts.push(`## ${val}`);
+    else if (type === 'quote') parts.push(`> ${val}`);
+    else if (type === 'code') parts.push(`\`\`\`\n${val}\n\`\`\``);
+    else parts.push(val);
+  });
+  return parts.join('\n\n');
+}
+
 function getAllHTML() {
   const title = document.getElementById('doc-title').value;
-  const blocks = Array.from(document.querySelectorAll('.block-ta')).map(b=>{
-    const t=b.dataset.type, v=b.value;
-    if(t==='h1') return `<h1>${v}</h1>`;
-    if(t==='h2') return `<h2>${v}</h2>`;
-    if(t==='quote') return `<blockquote>${v}</blockquote>`;
-    if(t==='code') return `<pre><code>${v}</code></pre>`;
-    // Convert markdown links to HTML in export
-    const vLinked = v.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-    return `<p>${vLinked}</p>`;
-  }).join('\n');
-  return title?`<h1>${title}</h1>\n${blocks}`:blocks;
+  const blockParts = [];
+  Array.from(document.querySelectorAll('.block-ta')).forEach(b => {
+    const type = b.dataset.type;
+    const val = b.value.trim();
+    if (!val) return;
+    // Convert [text](url) markdown links
+    const linked = val.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    if (type === 'h1') blockParts.push(`<h1>${escapeHTML(val)}</h1>`);
+    else if (type === 'h2') blockParts.push(`<h2>${escapeHTML(val)}</h2>`);
+    else if (type === 'quote') blockParts.push(`<blockquote><p>${escapeHTML(val)}</p></blockquote>`);
+    else if (type === 'code') blockParts.push(`<pre><code>${escapeHTML(val)}</code></pre>`);
+    else {
+      // Handle bullet lists inside paragraphs
+      if (val.match(/^[•\-\*] /m) || val.match(/^\d+\. /m)) {
+        const lines = val.split('\n');
+        const listItems = lines.map(line => {
+          const bulletMatch = line.match(/^[•\-\*] (.+)/);
+          const numMatch = line.match(/^\d+\. (.+)/);
+          if (bulletMatch) return `<li>${escapeHTML(bulletMatch[1])}</li>`;
+          if (numMatch) return `<li>${escapeHTML(numMatch[1])}</li>`;
+          return line.trim() ? `<p>${escapeHTML(line)}</p>` : '';
+        }).filter(Boolean);
+        const isOrdered = val.match(/^\d+\. /m);
+        blockParts.push(isOrdered ? `<ol>${listItems.join('')}</ol>` : `<ul>${listItems.join('')}</ul>`);
+      } else {
+        // Convert line breaks to <br> within paragraphs, handle inline markdown links
+        const withLinks = escapeHTML(val).replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+        const withBreaks = withLinks.replace(/\n/g, '<br>');
+        blockParts.push(`<p>${withBreaks}</p>`);
+      }
+    }
+  });
+  const titleHTML = title ? `<h1>${escapeHTML(title)}</h1>` : '';
+  const style = `<style>
+    body { font-family: Georgia, serif; max-width: 700px; margin: 40px auto; padding: 0 24px; line-height: 1.7; color: #1a1a1a; }
+    h1 { font-size: 2em; margin-bottom: 0.5em; }
+    h2 { font-size: 1.4em; margin-top: 1.5em; }
+    p { margin: 1em 0; }
+    blockquote { border-left: 3px solid #c00; padding-left: 1em; color: #555; font-style: italic; margin: 1.5em 0; }
+    pre { background: #f5f5f5; padding: 1em; border-radius: 6px; overflow-x: auto; }
+    code { font-family: monospace; font-size: 0.9em; }
+    ul, ol { margin: 1em 0; padding-left: 2em; }
+    li { margin: 0.4em 0; }
+    a { color: #c00; }
+  </style>`;
+  return `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"><title>${escapeHTML(title || 'Document')}</title>${style}</head>\n<body>\n${titleHTML}\n${blockParts.join('\n')}\n</body>\n</html>`;
 }
+
+function escapeHTML(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 async function exportAs(type) {
   closeOverlay('o-export');
-  if (type==='copy') {
-    await navigator.clipboard.writeText(getAllText()).catch(()=>{});
-    toast('Copied to clipboard');
-  } else if (type==='txt') {
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([getAllText()],{type:'text/plain'}));
-    a.download=(document.getElementById('doc-title').value||'document')+'.txt'; a.click();
-    toast('Downloaded');
-  } else if (type==='html') {
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([getAllHTML()],{type:'text/html'}));
-    a.download=(document.getElementById('doc-title').value||'document')+'.html'; a.click();
+  const docTitle = document.getElementById('doc-title').value || 'document';
+
+  if (type === 'copy') {
+    const text = getAllTextPlain();
+    try {
+      await navigator.clipboard.writeText(text);
+      toast('Copied to clipboard');
+    } catch(e) {
+      // Fallback for mobile
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      toast('Copied to clipboard');
+    }
+  } else if (type === 'txt') {
+    const blob = new Blob([getAllTextPlain()], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = docTitle + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Downloaded .txt');
+  } else if (type === 'html') {
+    const blob = new Blob([getAllHTML()], { type: 'text/html;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = docTitle + '.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
     toast('Exported as HTML');
+  } else if (type === 'md') {
+    const blob = new Blob([getAllMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = docTitle + '.md';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Exported as Markdown');
   }
 }
 
@@ -1898,6 +2163,7 @@ function onDocChange() {
   showSavePill(false);
   clearTimeout(saveTimer);
   updateGuardrail();
+  scheduleUndoPush();
   if (document.getElementById('tog-autosave')?.classList.contains('on')) {
     saveTimer=setTimeout(saveDoc,1800);
   }
@@ -1915,7 +2181,6 @@ function showSavePill(saved) {
 function autoResize(ta) {
   ta.style.height = 'auto';
   ta.style.height = ta.scrollHeight + 'px';
-  // Keep caret visible in the doc area as content grows
   const docArea = document.getElementById('doc-area');
   if (docArea && ta.closest('#doc-area')) {
     const taRect = ta.getBoundingClientRect();
@@ -2009,6 +2274,7 @@ function editSelectedBlocks() {
 
 function deleteSelectedBlocks() {
   if (S.selectedBlocks.size === 0) return;
+  UndoStack.push(); // snapshot before bulk delete
   const indices = [...S.selectedBlocks].sort((a,b)=>b-a);
   const trashed = load('tpr_trash', []);
   indices.forEach(idx => {
@@ -2380,8 +2646,9 @@ function updateEditorModelBadge() {
   if (metaBar && label) {
     const badge = document.createElement('div');
     badge.id = 'editor-model-badge';
-    badge.style.cssText = 'font-size:10px;letter-spacing:0.5px;color:var(--text3);font-family:var(--font-mono);margin-left:auto;padding-right:4px;';
+    badge.style.cssText = 'font-size:10px;letter-spacing:0.5px;color:var(--text3);font-family:var(--font-mono);padding-right:4px;';
     badge.textContent = label;
+    // Insert before undo button slot — append to end of meta bar
     metaBar.appendChild(badge);
   }
 }
@@ -2399,7 +2666,7 @@ if ('serviceWorker' in navigator) {
     caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
   }
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js?v=4').catch(() => {});
+    navigator.serviceWorker.register('/sw.js?v=5').catch(() => {});
   });
 }
 </script>
